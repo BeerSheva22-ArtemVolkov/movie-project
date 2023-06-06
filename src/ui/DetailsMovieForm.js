@@ -66,7 +66,8 @@ export default class DetailsMovieForm {
     fillDetailsSection(index) {
         const movieItem = document.getElementsByClassName('movie-item')[index];
         console.log(movieItem);
-        // div с названием и кнопками
+        
+        // div с названием и кнопками 
 
     }
 }
