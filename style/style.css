@@ -1,0 +1,50 @@
+#movies-section {
+    display: flex;
+    flex-direction: row;
+}
+
+#movies-list {
+    display: flex;
+    flex-direction: row;
+    /* justify-content: center;
+    list-style-type: none; */
+    margin: 10px;
+    flex-wrap: wrap;
+}
+
+#movie-detail {
+    display: none;
+    min-width: 40%;
+    background-color: red;
+}
+
+.movie-item {
+    width: 160px;
+    margin: 10px;
+    font-size: .75rem;
+}
+
+.movie-item img {
+    width: 160px;
+    padding: 1px;
+}
+
+.movie-item a {
+    font-weight: bold;
+    color: darkcyan
+}
+
+.active {
+    color: white;
+    background-color: blue;
+}
+
+.like-btn,
+.watch-btn {
+    width: 50%;
+    height: 20px;
+}
+
+.buttons-container {
+    position: absolute;
+}
