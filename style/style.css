@@ -48,3 +48,78 @@
 .buttons-container {
     position: absolute;
 }
+
+#details-description {
+    display: flex;
+    flex-direction: column;
+}
+
+#pages-toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
+#pages-toolbar div {
+    padding: .5rem;
+    margin: .5rem;
+    background-color: red;
+}
+
+#search-toolbar {
+    display: flex;
+    flex-direction: row;
+}
+
+#search-toolbar div {
+    /* background-color: aqua; */
+    margin-right: .5rem;
+}
+
+#filter-categories {
+    display: flex;
+    flex-direction: row;
+}
+
+#filter-categories div {
+    /* background-color: aqua; */
+    margin-right: .5rem;
+}
+
+.ACTIVE-CATEGORY {
+    background-color: coral;
+}
+
+#dropdown-genres {
+    /* position: absolute; */
+    height: 5rem;
+    overflow-y: scroll;
+    display: none;
+    border: 1px #dadada solid;
+}
+
+#dropdown-genres label {
+    display: block;
+}
+
+#submit-form{
+    display: none;
+}
+
+#select-genres {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#select-genres select {
+    width: 100%;
+    font-weight: bold;
+}
+
+.overSelect {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}

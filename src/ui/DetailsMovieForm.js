@@ -2,6 +2,12 @@ export default class DetailsMovieForm {
 
     #parentElement;
     #activeIndex;
+    #nameA;
+    #img;
+    #raitingA;
+    #genresA;
+    #raitingCountA;
+    #overviewA;
 
     constructor(parentID) {
         const parentElement = document.getElementById(parentID);
@@ -25,12 +31,16 @@ export default class DetailsMovieForm {
 
     #fillForm() {
         const headDiv = document.createElement('div');
-        const detailsDiv = document.createElement('div');
+        const infoDiv = document.createElement('div');
         const overviewDiv = document.createElement('div');
+        headDiv.setAttribute('id', 'details-head');
+        infoDiv.setAttribute('id', 'details-info');
+        overviewDiv.setAttribute('id', 'details-overview');
 
         const nameDiv = document.createElement('div');
-        const nameA = document.createElement('a');
-        nameDiv.appendChild(nameA);
+        nameDiv.setAttribute('id', 'details-name');
+        this.#nameA = document.createElement('a');
+        nameDiv.appendChild(this.#nameA);
         const buttonsDiv = document.createElement('div');
         buttonsDiv.className = 'buttons-container';
         const likeBtn = document.createElement('button');
@@ -43,30 +53,36 @@ export default class DetailsMovieForm {
         headDiv.appendChild(buttonsDiv);
 
         const imgDiv = document.createElement('div');
-        const img = document.createElement('img');
-        imgDiv.appendChild(img);
+        imgDiv.setAttribute('id', 'details-img');
+        this.#img = document.createElement('img');
+        imgDiv.appendChild(this.#img);
         const aboutDiv = document.createElement('div');
-        const raitingA = document.createElement('a');
-        const genresA = document.createElement('a');
-        const raitingCountA = document.createElement('a');
-        aboutDiv.appendChild(raitingA);
-        aboutDiv.appendChild(genresA);
-        aboutDiv.appendChild(raitingCountA);
-        detailsDiv.appendChild(imgDiv);
-        detailsDiv.appendChild(aboutDiv);
+        aboutDiv.setAttribute('id', 'details-description');
+        this.#raitingA = document.createElement('a');
+        this.#genresA = document.createElement('a');
+        aboutDiv.appendChild(this.#raitingA);
+        aboutDiv.appendChild(this.#genresA);
+        infoDiv.appendChild(imgDiv);
+        infoDiv.appendChild(aboutDiv);
 
-        const descriptionA = document.createElement('a');
-        overviewDiv.appendChild(descriptionA);
+        this.#overviewA = document.createElement('a');
+        overviewDiv.appendChild(this.#overviewA);
 
         this.#parentElement.appendChild(headDiv);
-        this.#parentElement.appendChild(detailsDiv);
+        this.#parentElement.appendChild(infoDiv);
         this.#parentElement.appendChild(overviewDiv);
     }
 
-    fillDetailsSection(index) {
+    fillDetailsSection(index, genres) {
         const movieItem = document.getElementsByClassName('movie-item')[index];
-        console.log(movieItem);
-        
+        this.#img.src = movieItem.getAttribute('movie-backdrop')
+        this.#nameA.innerHTML = movieItem.getAttribute('movie-name');
+        this.#raitingA.innerHTML = `${movieItem.getAttribute('movie-rating')}(${movieItem.getAttribute('movie-count')})`;
+        this.#genresA.innerHTML = movieItem.getAttribute('genre-ids').split(',').map(genre => {
+            return genres.find(x => x.id == Number(genre)).name;
+        }).join(', ');
+        this.#raitingCountA;
+        this.#overviewA.innerHTML = movieItem.getAttribute('movie-description');
         // div с названием и кнопками 
 
     }

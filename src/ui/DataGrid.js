@@ -17,6 +17,7 @@ export default class DataGrid {
     }
 
     async fillData(dataArray) {
+        this.#tBodyElement.innerHTML = '';
         dataArray.results.forEach((movie, index) => {
             // Создаем контейнер для всего фильма
             const movieDiv = document.createElement('div');
@@ -49,9 +50,14 @@ export default class DataGrid {
             movieDiv.appendChild(movieInfoDiv);
             movieDiv.setAttribute('movie-description', movie.overview)
             movieDiv.setAttribute('genre-ids', movie.genre_ids.reduce((g1, g2) => `${g1}, ${g2}`))
+            movieDiv.setAttribute('movie-backdrop', dataArray.imageURL + movie.backdrop_path)
+            movieDiv.setAttribute('movie-name', movie.title)
+            movieDiv.setAttribute('movie-rating', movie.vote_average)
+            movieDiv.setAttribute('movie-count', movie.vote_count)
             // movieDiv.setAttribute('id', `movie-item-${index}`)
             this.#tBodyElement.appendChild(movieDiv);
         })
+        this.#addListeners();
     }
 
     #getRow(obj) {
@@ -62,7 +68,7 @@ export default class DataGrid {
 
     addHandler(handler) {
         this.#callbackFn = handler;
-        this.#addListeners();
+        // this.#addListeners();
     }
 
     selectRow(nRow) {
