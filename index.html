@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="style/style.css"></link>
+    <link rel="stylesheet" href="style/style.css">
+    </link>
 </head>
+
 <body>
     <header>
         <div id="menu-container"></div>
@@ -15,17 +18,23 @@
     <main>
         <section id="home-section">
             <div id="search-toolbar"></div>
-            <div id="movies-section">
-                <div id="movies-list"></div>
-                <div id="movie-detail"></div>
+            <div class="movies-section">
+                <div id="home-movies-list"></div>
+                <div id="home-movies-list-details"></div>
             </div>
             <div id="pages-toolbar"></div>
         </section>
         <section id="favorite-section">
-
+            <div class="movies-section">
+                <div id="favorite-movies-list"></div>
+                <div id="favorite-movies-list-details"></div>
+            </div>
         </section>
         <section id="watch-list-section">
-
+            <div class="movies-section">
+                <div id="watch-list-movies-list"></div>
+                <div id="watch-list-movies-list-details"></div>
+            </div>
         </section>
         <section id="search-section">
 
@@ -39,12 +48,14 @@
         <section id="log-out-section">
 
         </section>
+        
     </main>
 
     <footer>
-
+        
     </footer>
 
     <script src="src/main.js" type="module"></script>
 </body>
+
 </html>

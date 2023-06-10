@@ -2,26 +2,21 @@ export default class DetailsMovieForm {
 
     #parentElement;
     #activeIndex;
-    #nameA;
-    #img;
-    #raitingA;
-    #genresA;
-    #raitingCountA;
-    #overviewA;
 
     constructor(parentID) {
-        const parentElement = document.getElementById(parentID);
-        this.#parentElement = parentElement;
-        this.#fillForm();
+        // this.#parentElement = document.getElementById(parentID);
+        // this.#fillForm();
     }
 
-    show(index) {
-        this.#parentElement.style.display = "block";
+    show(index, parentID) {
+        document.getElementById(parentID).classList.add('BLURE');
+        document.getElementById(parentID + '-details').style.display = "block";
         this.#activeIndex = index;
     }
 
-    hide() {
-        this.#parentElement.style.display = "none";
+    hide(parentID) {
+        document.getElementById(parentID).classList.remove('BLURE');
+        document.getElementById(parentID + '-details').style.display = "none";
         this.#activeIndex = undefined;
     }
 
@@ -29,61 +24,56 @@ export default class DetailsMovieForm {
         return this.#activeIndex;
     }
 
-    #fillForm() {
-        const headDiv = document.createElement('div');
-        const infoDiv = document.createElement('div');
-        const overviewDiv = document.createElement('div');
-        headDiv.setAttribute('id', 'details-head');
-        infoDiv.setAttribute('id', 'details-info');
-        overviewDiv.setAttribute('id', 'details-overview');
-
-        const nameDiv = document.createElement('div');
-        nameDiv.setAttribute('id', 'details-name');
-        this.#nameA = document.createElement('a');
-        nameDiv.appendChild(this.#nameA);
-        const buttonsDiv = document.createElement('div');
-        buttonsDiv.className = 'buttons-container';
-        const likeBtn = document.createElement('button');
-        likeBtn.className = 'like-btn';
-        const watchBtn = document.createElement('button');
-        watchBtn.className = 'watch-btn';
-        buttonsDiv.appendChild(likeBtn)
-        buttonsDiv.appendChild(watchBtn)
-        headDiv.appendChild(nameDiv);
-        headDiv.appendChild(buttonsDiv);
-
-        const imgDiv = document.createElement('div');
-        imgDiv.setAttribute('id', 'details-img');
-        this.#img = document.createElement('img');
-        imgDiv.appendChild(this.#img);
-        const aboutDiv = document.createElement('div');
-        aboutDiv.setAttribute('id', 'details-description');
-        this.#raitingA = document.createElement('a');
-        this.#genresA = document.createElement('a');
-        aboutDiv.appendChild(this.#raitingA);
-        aboutDiv.appendChild(this.#genresA);
-        infoDiv.appendChild(imgDiv);
-        infoDiv.appendChild(aboutDiv);
-
-        this.#overviewA = document.createElement('a');
-        overviewDiv.appendChild(this.#overviewA);
-
-        this.#parentElement.appendChild(headDiv);
-        this.#parentElement.appendChild(infoDiv);
-        this.#parentElement.appendChild(overviewDiv);
+    fillForm(parentID, index, genres) {
+        const movieItem = document.getElementById(parentID).getElementsByClassName('movie-item')[index];
+        document.getElementById(parentID + '-details').innerHTML = `
+            <div id="details-head">
+                <div id="details-name">
+                    <a id="title-place">${movieItem.getAttribute('movie-name')}</a>
+                </div>
+                <div>
+                    <button id="close-details-button"></button>
+                </div>
+                
+            </div>
+            <div id="details-info">
+            <div id="details-buttons-container">${movieItem.getElementsByClassName('buttons-container')[0].innerHTML}</div>
+                <div id="details-img">
+                    <img id="img-place" src="${movieItem.getAttribute('movie-backdrop')}">
+                </div>
+                
+            </div>
+            <div id="details-overview">
+                <table id="details-description">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <label>Рейтинг: </label>
+                            </td>
+                            <td>
+                                <a id="raiting-place">${movieItem.getAttribute('movie-rating')}(${movieItem.getAttribute('movie-count')})</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label>Жанр: </label>
+                            </td>
+                            <td>
+                                <a id="genres-place">${movieItem.getAttribute('genre-ids').split(',').map(genre => {
+                                    return genres.find(x => x.id == Number(genre)).name;
+                                }).join(', ')}</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div>
+                    <a id="overview-place">${movieItem.getAttribute('movie-description') ? movieItem.getAttribute('movie-description') : `Описание к фильму отсутствует...`}</a>
+                </div>
+                
+            </div>`
+        const closeButton = document.getElementById(parentID + '-details').querySelector('#close-details-button');
+        closeButton.addEventListener("click", this.hide.bind(this, parentID));
+        closeButton.style.backgroundImage = "url('./img/close-icon.png')";
     }
 
-    fillDetailsSection(index, genres) {
-        const movieItem = document.getElementsByClassName('movie-item')[index];
-        this.#img.src = movieItem.getAttribute('movie-backdrop')
-        this.#nameA.innerHTML = movieItem.getAttribute('movie-name');
-        this.#raitingA.innerHTML = `${movieItem.getAttribute('movie-rating')}(${movieItem.getAttribute('movie-count')})`;
-        this.#genresA.innerHTML = movieItem.getAttribute('genre-ids').split(',').map(genre => {
-            return genres.find(x => x.id == Number(genre)).name;
-        }).join(', ');
-        this.#raitingCountA;
-        this.#overviewA.innerHTML = movieItem.getAttribute('movie-description');
-        // div с названием и кнопками 
-
-    }
 }

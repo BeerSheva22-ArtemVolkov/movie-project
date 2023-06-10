@@ -1,22 +1,167 @@
-#movies-section {
+/* Menu start */
+
+.menu-button:first-child{
+    border-left: 2px solid black;
+}
+
+.menu-button{
+    background: transparent;
+    border: 0px;
+    border-right: 2px solid black;
+    height: 2rem;
+    padding-right: 5%;
+    padding-left: 5%;
+    background-color: gainsboro;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.active {
+    color: white;
+    background-color: orange;
+}
+
+#home-menu-button{
+    background-image: url('img/close-icon.png');
+}
+
+/* Menu end */
+
+.movies-section {
     display: flex;
     flex-direction: row;
 }
 
-#movies-list {
+#favorite-movies-list,
+#watch-list-movies-list,
+#home-movies-list {
     display: flex;
     flex-direction: row;
-    /* justify-content: center;
-    list-style-type: none; */
+    list-style-type: none;
     margin: 10px;
     flex-wrap: wrap;
 }
 
-#movie-detail {
+/* Details start */
+#home-movies-list-details,
+#favorite-movies-list-details,
+#watch-list-movies-list-details {
     display: none;
-    min-width: 40%;
-    background-color: red;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 100%;
+    border-radius: 2.5rem;
+    background-color: slategray;
+    justify-content: center;
+    /* overflow: hidden; */
 }
+
+#details-buttons-container {
+    margin: .5rem;
+}
+
+#close-details-button {
+    width: 2rem;
+    height: 2rem;
+    margin-top: .5rem;
+    margin-right: 1rem;
+    background-position: center;
+    background-size: auto;
+    background-color: transparent;
+    border: 0px;
+    position: absolute;
+}
+
+/* #details-name button {
+    position: absolute;
+    float: right;
+    right: 0;
+} */
+
+#details-name a {
+    padding-left: .5rem;
+    padding-right: .5rem;
+    text-align: center;
+}
+
+#details-buttons-container,
+.buttons-container {
+    margin-top: .1rem;
+    margin-left: .1rem;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+}
+
+#details-head {
+    width: 100%;
+    display: flex;
+    font-size: 40px;
+    text-align: center;
+    color: ghostwhite;
+    font-weight: bold;
+    justify-content: space-between;
+}
+
+#details-head:last-child {
+    position: absolute;
+    right: 0;
+}
+
+#details-img img {
+    max-height: 100%;
+    max-width: 100%;
+    width: -webkit-fill-available;
+    object-fit: cover;
+}
+
+#details-overview {
+    padding-bottom: 5%;
+    font-size: larger;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    color: ghostwhite
+}
+
+#details-description {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: .5rem;
+}
+
+#details-description label {
+    margin-right: .5rem;
+}
+
+/* Details end */
+
+/* Paginator start */
+
+#prev-page{
+    background-color: ;
+}
+
+#pages-toolbar {
+    justify-content: center;
+}
+
+#pages-toolbar div{
+    border-radius: .5rem;
+    width: auto;
+    height: auto;
+    text-align: center;
+    background-color: gainsboro;
+    /* color: ; */
+}
+
+#pages-toolbar  #active-page{
+    background-color: orange;
+    color: black;
+}
+
+/* Paginator end */
 
 .movie-item {
     width: 160px;
@@ -34,24 +179,17 @@
     color: darkcyan
 }
 
-.active {
-    color: white;
-    background-color: blue;
-}
-
 .like-btn,
 .watch-btn {
-    width: 50%;
-    height: 20px;
-}
-
-.buttons-container {
-    position: absolute;
-}
-
-#details-description {
-    display: flex;
-    flex-direction: column;
+    /* border-radius: 25%; */
+    border: 0px;
+    width: 32px;
+    height: 32px;
+    background-position: center;
+    background-size: auto;
+    background-color: transparent;
+    border-radius: 50%;
+    background-color: white;
 }
 
 #pages-toolbar {
@@ -62,7 +200,7 @@
 #pages-toolbar div {
     padding: .5rem;
     margin: .5rem;
-    background-color: red;
+    /* background-color: red; */
 }
 
 #search-toolbar {
@@ -89,6 +227,10 @@
     background-color: coral;
 }
 
+.BLURE {
+    filter: blur(8px);
+}
+
 #dropdown-genres {
     /* position: absolute; */
     height: 5rem;
@@ -101,7 +243,7 @@
     display: block;
 }
 
-#submit-form{
+#submit-form {
     display: none;
 }
 
@@ -122,4 +264,9 @@
     right: 0;
     top: 0;
     bottom: 0;
+}
+
+.selectedBTN {
+    background-color: green;
+    /* border: 3px solid black; */
 }

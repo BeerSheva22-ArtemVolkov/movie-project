@@ -18,7 +18,7 @@ export default class Filters {
 
     fillToolbar() {
         this.#parentElement.innerHTML = `<div id="filter-categories">${this.#categories.map(category => `<div id="category-${category.name}">${category.title}</div>`).join('')}</div>`
-        this.#parentElement.innerHTML +=    `<div id="select-genres">
+        this.#parentElement.innerHTML += `<div id="select-genres">
                                                 <div id="expand-dropdown-genres">
                                                     <button>Жанры</button>
                                                 </div>
@@ -26,10 +26,10 @@ export default class Filters {
                                                     <form class="genres-form">
                                                         <div>
                                                             ${this.#genres.map(genre => {
-                                                                return `<label for="genre-id-${genre.id}">
+            return `<label for="genre-id-${genre.id}">
                                                                     <input type="checkbox" id="genre-id-${genre.id}" class="genres"/>${genre.name}</label>
                                                                 </label>`
-                                                            }).join('')}
+        }).join('')}
                                                         </div>
                                                     </form>
                                                 </div>
@@ -37,19 +37,18 @@ export default class Filters {
                                                     <button id="submitBtn" type="submit">Submit</button>
                                                 </div>
                                                 
-                                            </div>`;            
+                                            </div>`;
         document.getElementById("expand-dropdown-genres").addEventListener("click", this.#showCheckboxes.bind(this))
     }
 
     #addCategoriesListeners() {
         document.getElementById("filter-categories").childNodes.forEach((row, index) => {
-            console.log(row, index);
             row.addEventListener("click", this.#categoriesHandler.bind(this, row.id, index))
         })
     }
 
     #addGenresListeners() {
-        document.getElementById("submitBtn").addEventListener("click", this.#genresHandler.bind(this, 'str', 1))
+        document.getElementById("submitBtn").addEventListener("click", this.#genresHandler.bind(this))
     }
 
     async #categoriesHandler(id, index) {
@@ -57,15 +56,15 @@ export default class Filters {
     }
 
     async #genresHandler() {
-        console.log('here');
         const arr = document.getElementsByClassName("genres");
-        const out = Array.from(arr).filter(ar =>{
-            if (ar.checked){
+        const out = Array.from(arr).filter(ar => {
+            if (ar.checked) {
                 return ar;
             }
         }).map(ar => {
             return ar.id.replace('genre-id-', '');
         }).join(',');
+        this.#showCheckboxes();
         await this.#genresCallback(out);
     }
 
@@ -79,19 +78,20 @@ export default class Filters {
         this.#addGenresListeners();
     }
 
-    setActive(categoryName, index) {
-        if (this.#activeIndex != index) {
-            if (document.getElementById("filter-categories").childNodes[this.#activeIndex]) {
-                document.getElementById("filter-categories").childNodes[this.#activeIndex].classList.remove('ACTIVE-CATEGORY');
-            }
-            document.getElementById("filter-categories").childNodes[index].className = 'ACTIVE-CATEGORY';
+    setActive(index) {
+        if (index == undefined && this.#activeIndex == undefined) {
+            index = 0;
+        }
+        if (this.#activeIndex != undefined) {
+            document.getElementById("filter-categories").childNodes[this.#activeIndex].classList.remove('ACTIVE-CATEGORY');
+        }
+        document.getElementById("filter-categories").childNodes[index != undefined ? index : this.#activeIndex].className = 'ACTIVE-CATEGORY';
+        if (index != undefined) {
             this.#activeIndex = index;
         }
-
     }
 
     #showCheckboxes() {
-        console.log('called');
         const checkboxes = document.getElementById("dropdown-genres");
         const submitForm = document.getElementById("submit-form");
         if (!this.#expanded) {

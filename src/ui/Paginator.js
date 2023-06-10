@@ -17,20 +17,20 @@ export default class Paginator {
         this.#parentElement.innerHTML = `<div id="prev-page" class="paginator-item">prev</div>
         ${this.#fillMiddlePart()}
         <div id="next-page" class="paginator-item">next</div>`;
-        this.#setActive();
+        // this.#setActive();
     }
 
     #fillMiddlePart() {
-        return `${this.#activePage == 1 ? '' : `<div>1</div>...`}
+        return `${this.#activePage == 1 ? '' : `<div>1</div><div>...</div>`}
                 ${`${this.#buildPrev()}<div id="active-page">${this.#activePage}</div>${this.#buildNext()}`}
-                ...<div>${this.#totalPages}</div>`
+                ${this.#activePage == this.#totalPages ? '' : `<div>...</div><div>${this.#totalPages}</div>`}`
     }
 
     #buildPrev(){
         let res = [];
         let count = 0;
         let i = this.#activePage - 1;
-        while (i > 1 && count < 3){
+        while (i > 1 && count < 5){
             res.push(`<div>${i--}</div>`);
             count++;
         }
@@ -41,16 +41,16 @@ export default class Paginator {
         let res = '';
         let count = 0;
         let i = this.#activePage;
-        while (i < this.#totalPages && count < 3){
+        while (i < this.#totalPages - 1 && count < 5){
             res += `<div>${++i}</div>`
             count++;
         }
         return res;
     }
 
-    #setActive(){
-        document.getElementById('active-page').style.backgroundColor = 'blue';
-    }
+    // #setActive(){
+    //     document.getElementById('active-page').style.backgroundColor = 'blue';
+    // }
 
     getActive(){
         return this.#activePage;
