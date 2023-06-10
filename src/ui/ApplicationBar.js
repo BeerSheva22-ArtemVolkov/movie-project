@@ -16,8 +16,9 @@ export default class ApplicationBar {
 
     #fillButtons(parentId, titles) {
         const parentElement = document.getElementById(parentId);
-        parentElement.innerHTML = titles.map(t => `<button class="menu-button" id="${t.split("_")[1]}" style="background-image: url(img/${t.split("_")[1]}-icon.png)">${t.split("_")[0]}</button>`).join('');
-        this.#Buttons = parentElement.childNodes;
+        parentElement.innerHTML = titles.map(t => `<button class="menu-button" title="${t.split("_")[0]}"id="${t.split("_")[1]}" style="background-image: url(img/${t.split("_")[1]}-icon.png)"></button>`).join('');
+        parentElement.innerHTML += '<div id="active-user-container"></div>';
+        this.#Buttons = parentElement.getElementsByClassName("menu-button");
     }
 
     #setSectionsElements(sectionIds) {
@@ -25,7 +26,9 @@ export default class ApplicationBar {
     }
 
     #addListeners() {
-        this.#Buttons.forEach((button, index) => button.addEventListener("click", this.#handler.bind(this, index)))
+        Array.from(this.#Buttons).forEach((button, index) => {
+            button.addEventListener("click", this.#handler.bind(this, index))
+        })
     }
 
     async #handler(index) {
@@ -50,15 +53,7 @@ export default class ApplicationBar {
     }
 
     setActiveIndex(index) {
-        // console.log(index, this.#activeIndex);
         const indexToCall = index != undefined ? index : this.#activeIndex;
-        // console.log(indexToCall);
-        // console.log(Array.from(document.getElementsByClassName('menu-button'))[indexToCall]);
-        // Array.from(document.getElementsByClassName('menu-button'))[indexToCall].click();
-        // if (index != undefined) {
-        //     this.#Buttons[this.#activeIndex].classList.remove(ACTIVE);
-        //     this.#activeIndex = index;
-        // }
         this.#handler(indexToCall)
     }
 
@@ -72,5 +67,9 @@ export default class ApplicationBar {
         buttonArray.forEach(b => {
             this.#Buttons[b].style.display = 'inline-block';
         })
+    }
+
+    setActiveUser(user){
+        document.getElementById("active-user-container").innerHTML = `<a>${user.username ? `Welcome, ${user.username}` : ''}</a>`
     }
 }

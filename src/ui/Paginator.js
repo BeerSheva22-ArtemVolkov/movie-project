@@ -6,8 +6,7 @@ export default class Paginator {
     #callbackFn
 
     constructor(parentID) {
-        const parentElement = document.getElementById(parentID);
-        this.#parentElement = parentElement;
+        this.#parentElement = document.getElementById(parentID);
         this.#activePage = 1;
     }
 
@@ -17,7 +16,6 @@ export default class Paginator {
         this.#parentElement.innerHTML = `<div id="prev-page" class="paginator-item">prev</div>
         ${this.#fillMiddlePart()}
         <div id="next-page" class="paginator-item">next</div>`;
-        // this.#setActive();
     }
 
     #fillMiddlePart() {

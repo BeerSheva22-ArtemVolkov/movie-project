@@ -39,7 +39,7 @@ export default class DetailsMovieForm {
             <div id="details-info">
             <div id="details-buttons-container">${movieItem.getElementsByClassName('buttons-container')[0].innerHTML}</div>
                 <div id="details-img">
-                    <img id="img-place" src="${movieItem.getAttribute('movie-backdrop')}">
+                    <img id="img-place" src="${movieItem.getAttribute('movie-backdrop') ? movieItem.getAttribute('movie-backdrop') : "./img/no-image-details.png"}">
                 </div>
                 
             </div>
@@ -59,9 +59,9 @@ export default class DetailsMovieForm {
                                 <label>Жанр: </label>
                             </td>
                             <td>
-                                <a id="genres-place">${movieItem.getAttribute('genre-ids').split(',').map(genre => {
+                                <a id="genres-place">${movieItem.getAttribute('genre-ids') ? movieItem.getAttribute('genre-ids').split(',').map(genre => {
                                     return genres.find(x => x.id == Number(genre)).name;
-                                }).join(', ')}</a>
+                                }).join(', ') : ''}</a>
                             </td>
                         </tr>
                     </tbody>

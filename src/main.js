@@ -4,6 +4,7 @@ import DataGrid from "./ui/DataGrid.js";
 import MoviesService from "./service/MoviesService.js"
 import UsersService from "./service/UsersService.js"
 import DetailsMovieForm from "./ui/DetailsMovieForm.js"
+import SearchMovieForm from "./ui/SearchMovieForm.js"
 import Paginator from "./ui/Paginator.js"
 import Filters from "./ui/Filters.js"
 import UsersActionPage from "./ui/UsersActionPage.js"
@@ -39,9 +40,11 @@ const moviesService = new MoviesService(menuHandler, categories);
 const homeMoviesTable = new DataGrid("home-movies-list");
 const favoriteMoviesTable = new DataGrid("favorite-movies-list");
 const watchlistMoviesTable = new DataGrid("watch-list-movies-list");
+const searchMoviesTable = new DataGrid("search-movies-list");
 const detailsMovieForm = new DetailsMovieForm();
 const paginator = new Paginator('pages-toolbar');
 const userService = new UsersService();
+const searchMovieForm = new SearchMovieForm('search-movie');
 const userLogInPage = new UsersActionPage('log-in-section', 'login');
 const registrationPage = new UsersActionPage('registration-section', 'registration');
 
@@ -53,9 +56,11 @@ let currentUser;
 const response = await userService.getActiveUser();
 if (response.length) {
     currentUser = response[0];
+    menu.setActiveUser(currentUser);
     menu.hideButtons([logInIndex, registrationIndex]);
 } else {
-    menu.hideButtons([logOutIndex]);
+    menu.setActiveUser('');
+    menu.hideButtons([logOutIndex, favoriteIndex, watchListIndex]);
 }
 
 // const intervalID = setInterval(userService.updateUser.bind(userService, currentUser), 5000);
@@ -86,7 +91,6 @@ async function menuHandler(index) {
         case favoriteIndex: {
 
             const movies = await action(moviesService.getMoviesFromArray.bind(moviesService, currentUser, 'favorites'));
-
             favoriteMoviesTable.fillData(movies, currentUser);
             favoriteMoviesTable.addHandler(movieDetailsHandler);
 
@@ -109,6 +113,9 @@ async function menuHandler(index) {
 
         case searchIndex: {
 
+            searchMovieForm.fillForm();
+            searchMovieForm.addEventListener(searchHandler);
+
             break;
         }
 
@@ -122,8 +129,8 @@ async function menuHandler(index) {
                     menu.showButtons([logOutIndex, favoriteIndex, watchListIndex]);
                 }
                 currentUser = user;
+                menu.setActiveUser(currentUser);
                 menu.setActiveIndex.call(menu, homeIndex);
-                //активировать кнопки на фильмах
                 return user;
             })
             break;
@@ -135,10 +142,10 @@ async function menuHandler(index) {
                 const user = await action(userService.registerUser.bind(userService, newUser));
                 if (user){
                     currentUser = user;
+                    menu.setActiveUser(currentUser);
                     menu.hideButtons([logInIndex, registrationIndex]);
                     menu.showButtons([logOutIndex, favoriteIndex, watchListIndex]);
                     menu.setActiveIndex.call(menu, homeIndex);
-                    //активировать кнопки на фильмах
                     return user;
                 }
             })
@@ -149,9 +156,8 @@ async function menuHandler(index) {
             userService.updateUser.call(userService, currentUser);
             await action(userService.logout.bind(userService, currentUser));
             currentUser = undefined;
+            menu.setActiveUser('');
             menu.showButtons([logInIndex, registrationIndex]);
-            // menu.setActiveIndex.call(menu, homeIndex);
-            //деактивировать кнопки на фильмах
             menu.hideButtons([logOutIndex, favoriteIndex, watchListIndex]);
             break;
         }
@@ -239,6 +245,16 @@ async function genresHandler(genres) {
     homeMoviesTable.fillData(movies, currentUser);
     paginator.fillForm(1, movies.total_pages)
     paginator.addHandler(paginatorHandler);
+}
+
+async function searchHandler(movieName){
+    console.log(movieName);
+    const movies = await action(moviesService.getMoviesByName.bind(moviesService, movieName));
+    console.log(movies);
+    searchMoviesTable.fillData(movies, currentUser);
+    searchMoviesTable.addHandler(movieDetailsHandler);
+
+    buttonsHandler('search-movies-list');
 }
 
 async function action(serviceFn) {

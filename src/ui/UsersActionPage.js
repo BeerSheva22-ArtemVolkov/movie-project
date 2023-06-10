@@ -15,26 +15,22 @@ export default class UsersActionPage {
     }
 
     async fillForm() {
-        this.#parentElement.innerHTML = `<form class="${this.#type}-control" id="${this.#parentID}-${this.#type}-form-id" autocomplete="off">
-            <table>
-                <tbody class="${this.#type}-input-group">
-                    <tr class="${this.#type}-username-container">
-                        <td><label for="${this.#type}-username-id">Username</label></td>
-                        <td><input type="text" name="username" id="${this.#type}-username-id" required></td>
-                    </tr>
-                    <tr class="${this.#type}-password-container">
-                        <td><label for="${this.#type}-password-id">Password</label></td>
-                        <td><input type="password" name="password" id="${this.#type}-password-id" required></td>
-                    </tr>
-                    ${this.#type == 'registration' ? `<tr class="${this.#type}-confirm-password-container">
-                        <td><label for="${this.#type}-confirm-password-id">Confirm password</label></td>
-                        <td><input type="password" name="confirm-password" id="${this.#type}-confirm-password-id" required></td>
-                    </tr>` : ''}
-                </tbody> 
-            </table>
-            <button class="${this.#type}-submitBtn" type="submit">Submit</button>
-        </form>`
-        this.#formElement = document.getElementById(`${this.#parentID}-${this.#type}-form-id`);
+        this.#parentElement.innerHTML = `<div id="${this.#type}-box">
+            <div><h1>${this.#type.toUpperCase()}</h1></div>
+            <form class="${this.#type}-control" id="${this.#parentID}-form-id" autocomplete="off">
+                        <div class="username-container">
+                            <input type="text" name="username" id="${this.#type}-username-id" placeholder="Username" required>
+                        </div>
+                        <div class="password-container">
+                            <input type="password" name="password" id="${this.#type}-password-id" placeholder="Password" required>
+                        </div>
+                        ${this.#type == 'registration' ? `<div class="confirm-password-container">
+                            <input type="password" name="confirm-password" id="${this.#type}-confirm-password-id" placeholder="Confirm password" required>
+                        </div>` : ''}
+                <button id="${this.#type}-submitBtn" type="submit">Submit</button>
+            </form>
+        </div>`
+        this.#formElement = document.getElementById(`${this.#parentID}-form-id`);
     }
 
     addHandler(callbackFn) {

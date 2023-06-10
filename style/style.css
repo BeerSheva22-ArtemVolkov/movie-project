@@ -1,16 +1,91 @@
+header {
+    display: block
+}
+
+/* login-registration */
+
+#registration-box,
+#login-box {
+    background-color: gray;
+    border-radius: .5rem;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1.5rem;
+
+}
+
+.password-container,
+.username-container,
+.confirm-password-container {
+    display: flex;
+    justify-content: center;
+    font-size: large;
+}
+
+.registration-control,
+.login-control{
+    display: flex;
+    flex-direction: column;
+}
+
+.registration-control input,
+.login-control input{
+    width: 100%;
+    height: 2rem;
+    margin-bottom: 1rem;
+    font-size: large;
+}
+
+#registration-submitBtn,
+#login-submitBtn{
+    background-color: dodgerblue;
+    border: 0;
+    color: white;
+    height: 2rem;
+    border-radius: .5rem;
+    font-size: large;
+}
+
+#search-movie{
+    background-color: gray;
+    display: flex;
+    flex-direction: column;
+}
+
+#search-movie input{
+    height: 2rem;
+    font-size: large;
+    width: -webkit-fill-available;
+}
+
+#search-movie button{
+    background-color: dodgerblue;
+    border: 0px;
+    font-size: large;
+    height: 1.5rem;
+    width: -webkit-fill-available;
+}
+
+#search-movie div{
+    font-size: large;
+}
+
 /* Menu start */
 
-.menu-button:first-child{
+.menu-button:first-child {
     border-left: 2px solid black;
 }
 
-.menu-button{
+.menu-button {
     background: transparent;
     border: 0px;
     border-right: 2px solid black;
     height: 2rem;
-    padding-right: 5%;
-    padding-left: 5%;
+    padding-right: 3%;
+    padding-left: 3%;
+    padding-top: 4%;
     background-color: gainsboro;
     background-repeat: no-repeat;
     background-position: center;
@@ -21,11 +96,92 @@
     background-color: orange;
 }
 
-#home-menu-button{
-    background-image: url('img/close-icon.png');
+#menu-container {
+    display: flex;
+    justify-content: last baseline;
+    background-image: linear-gradient(to right, gray, white);
+    margin-bottom: .5rem;
+}
+
+#menu-container div {
+    position: absolute;
+    right: 0;
+}
+
+#active-user-container {
+    font-size: large;
+    margin-right: .5rem;
 }
 
 /* Menu end */
+
+/* Filters-categories end */
+
+#filter-categories {
+    display: flex;
+    flex-direction: row;
+}
+
+#search-toolbar {
+    background-image: linear-gradient(to right, gray, white);
+    display: flex;
+    flex-direction: row;
+}
+
+#filter-categories div {
+    padding: .5rem;
+    border-left: 2px solid black;
+}
+
+#filter-categories div:last-child {
+    border-right: 2px solid black;
+}
+
+#expand-dropdown-genres button {
+    background: transparent;
+    border: 0px;
+}
+
+#expand-dropdown-genres {
+    padding: .5rem;
+}
+
+#dropdown-genres {
+    height: 5rem;
+    overflow-y: scroll;
+    display: none;
+}
+
+#dropdown-genres label {
+    display: block;
+}
+
+#select-genres {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+#select-genres select {
+    width: 100%;
+    font-weight: bold;
+}
+
+#submit-form {
+    display: none;
+}
+
+#submit-form button {
+    width: 100%;
+    background: transparent;
+    border: 1px solid black;
+}
+
+.ACTIVE-CATEGORY {
+    background-color: orange;
+}
+
+/* Filters-categories end */
 
 .movies-section {
     display: flex;
@@ -34,9 +190,11 @@
 
 #favorite-movies-list,
 #watch-list-movies-list,
+#search-movies-list,
 #home-movies-list {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
     list-style-type: none;
     margin: 10px;
     flex-wrap: wrap;
@@ -45,6 +203,7 @@
 /* Details start */
 #home-movies-list-details,
 #favorite-movies-list-details,
+#search-movies-list-details,
 #watch-list-movies-list-details {
     display: none;
     position: fixed;
@@ -139,15 +298,11 @@
 
 /* Paginator start */
 
-#prev-page{
-    background-color: ;
-}
-
 #pages-toolbar {
     justify-content: center;
 }
 
-#pages-toolbar div{
+#pages-toolbar div {
     border-radius: .5rem;
     width: auto;
     height: auto;
@@ -156,7 +311,7 @@
     /* color: ; */
 }
 
-#pages-toolbar  #active-page{
+#pages-toolbar #active-page {
     background-color: orange;
     color: black;
 }
@@ -203,59 +358,8 @@
     /* background-color: red; */
 }
 
-#search-toolbar {
-    display: flex;
-    flex-direction: row;
-}
-
-#search-toolbar div {
-    /* background-color: aqua; */
-    margin-right: .5rem;
-}
-
-#filter-categories {
-    display: flex;
-    flex-direction: row;
-}
-
-#filter-categories div {
-    /* background-color: aqua; */
-    margin-right: .5rem;
-}
-
-.ACTIVE-CATEGORY {
-    background-color: coral;
-}
-
 .BLURE {
     filter: blur(8px);
-}
-
-#dropdown-genres {
-    /* position: absolute; */
-    height: 5rem;
-    overflow-y: scroll;
-    display: none;
-    border: 1px #dadada solid;
-}
-
-#dropdown-genres label {
-    display: block;
-}
-
-#submit-form {
-    display: none;
-}
-
-#select-genres {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-#select-genres select {
-    width: 100%;
-    font-weight: bold;
 }
 
 .overSelect {

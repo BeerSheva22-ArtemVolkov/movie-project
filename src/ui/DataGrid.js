@@ -1,5 +1,3 @@
-const selectColor = "black";
-
 export default class DataGrid {
 
     #tBodyElement;
@@ -10,19 +8,17 @@ export default class DataGrid {
     constructor(parentID) {
         this.#parentID = parentID;
         this.#tBodyElement = document.getElementById(parentID);
-        // this.#keys = columns.map(column => column.field);
-        // this.#buildTable(parentID, columns.map(c => c.headerName));
     }
 
     async fillData(dataArray, user) {
         this.#tBodyElement.innerHTML = dataArray.results.map(movie => {
-            return `<div class="movie-item" movie-description="${movie.overview}" genre-ids="${movie.genre_ids.reduce((g1, g2) => `${g1}, ${g2}`)}" movie-backdrop="${dataArray.imageURL + movie.backdrop_path}" movie-name="${movie.title}" movie-rating="${movie.vote_average}" movie-count="${movie.vote_count}">
+            return `<div class="movie-item" movie-description="${movie.overview}" genre-ids="${movie.genre_ids.length ? movie.genre_ids.reduce((g1, g2) => `${g1}, ${g2}`) : ''}" movie-backdrop="${movie.backdrop_path ? dataArray.imageURL + movie.backdrop_path : ''}" movie-name="${movie.title}" movie-rating="${movie.vote_average}" movie-count="${movie.vote_count}">
                         <div class="buttons-container">
-                            <button class="like-btn ${user == undefined ? '' : this.#switchButton(user.favorites, movie.id)}" movie-id=${movie.id} ${user == undefined ? 'disabled' : ''}></button>
-                            <button class="watch-btn ${user == undefined ? '' : this.#switchButton(user.watchlist, movie.id)}" movie-id=${movie.id} ${user == undefined ? 'disabled' : ''}></button>
+                            <button class="like-btn ${user == undefined ? '' : this.#switchButton(user.favorites, movie.id)}" movie-id=${movie.id} ${user == undefined ? 'disabled hidden' : ''}></button>
+                            <button class="watch-btn ${user == undefined ? '' : this.#switchButton(user.watchlist, movie.id)}" movie-id=${movie.id} ${user == undefined ? 'disabled hidden' : ''}></button>
                         </div>
                         <div class="movie-item-info">
-                            <img src="${dataArray.imageURL + movie.poster_path}">
+                            <img src="${movie.poster_path ? dataArray.imageURL + movie.poster_path : "./img/no-poster.png"}">
                             <div>
                                 <a>${movie.title}</a>
                                 <div>${movie.original_title}</div>
