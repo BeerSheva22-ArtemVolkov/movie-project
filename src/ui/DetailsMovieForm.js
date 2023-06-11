@@ -1,12 +1,8 @@
+import imagesConfig from "../config/imagesConfig.json" assert {type: 'json'}
+
 export default class DetailsMovieForm {
 
-    #parentElement;
     #activeIndex;
-
-    constructor(parentID) {
-        // this.#parentElement = document.getElementById(parentID);
-        // this.#fillForm();
-    }
 
     show(index, parentID) {
         document.getElementById(parentID).classList.add('BLURE');
@@ -34,12 +30,11 @@ export default class DetailsMovieForm {
                 <div>
                     <button id="close-details-button"></button>
                 </div>
-                
             </div>
             <div id="details-info">
             <div id="details-buttons-container">${movieItem.getElementsByClassName('buttons-container')[0].innerHTML}</div>
                 <div id="details-img">
-                    <img id="img-place" src="${movieItem.getAttribute('movie-backdrop') ? movieItem.getAttribute('movie-backdrop') : "./img/no-image-details.png"}">
+                    <img id="img-place" src="${movieItem.getAttribute('movie-backdrop') ? movieItem.getAttribute('movie-backdrop') : `${imagesConfig["details-no-image"]}`}">
                 </div>
                 
             </div>
@@ -55,7 +50,7 @@ export default class DetailsMovieForm {
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="vertical-align: top;">
                                 <label>Жанр: </label>
                             </td>
                             <td>
@@ -69,11 +64,10 @@ export default class DetailsMovieForm {
                 <div>
                     <a id="overview-place">${movieItem.getAttribute('movie-description') ? movieItem.getAttribute('movie-description') : `Описание к фильму отсутствует...`}</a>
                 </div>
-                
             </div>`
         const closeButton = document.getElementById(parentID + '-details').querySelector('#close-details-button');
         closeButton.addEventListener("click", this.hide.bind(this, parentID));
-        closeButton.style.backgroundImage = "url('./img/close-icon.png')";
+        closeButton.style.backgroundImage = `url('${imagesConfig["close-icon"]}')`;
     }
 
 }

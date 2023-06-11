@@ -25,11 +25,9 @@ export default class Filters {
                                                 <div id="dropdown-genres">
                                                     <form class="genres-form">
                                                         <div>
-                                                            ${this.#genres.map(genre => {
-            return `<label for="genre-id-${genre.id}">
-                                                                    <input type="checkbox" id="genre-id-${genre.id}" class="genres"/>${genre.name}</label>
-                                                                </label>`
-        }).join('')}
+                                                            ${this.#genres.map(genre => `<label for="genre-id-${genre.id}">
+                                                                                            <input type="checkbox" id="genre-id-${genre.id}" class="genres"/>${genre.name}</label>
+                                                                                        </label>`).join('')}
                                                         </div>
                                                     </form>
                                                 </div>

@@ -1,0 +1,13 @@
+{
+    "details-no-image": "./img/no-image-details.png",
+    "close-icon": "./img/close-icon.png",
+    "favorite-menu-button-icon": "./img/favorite-menu-button-icon.png",
+    "home-menu-button-icon": "./img/home-menu-button-icon.png",
+    "log-in-menu-button-icon": "./img/log-in-menu-button-icon.png",
+    "log-out-menu-button-icon": "./img/log-out-menu-button-icon.png",
+    "registration-menu-button-icon": "./img/registration-menu-button-icon.png",
+    "search-menu-button-icon": "./img/search-menu-button-icon.png",
+    "watch-list-menu-button-icon": "./img/watch-list-menu-button-icon.png",
+    "watch-icon": "./img/watch-icon.png",
+    "like-icon": "./img/like-icon.png"
+}

@@ -1,4 +1,3 @@
-// import employeesConfig from "./config/employees-config.json" assert {type: 'json'}
 import ApplicationBar from "./ui/ApplicationBar.js";
 import DataGrid from "./ui/DataGrid.js";
 import MoviesService from "./service/MoviesService.js"
@@ -8,23 +7,23 @@ import SearchMovieForm from "./ui/SearchMovieForm.js"
 import Paginator from "./ui/Paginator.js"
 import Filters from "./ui/Filters.js"
 import UsersActionPage from "./ui/UsersActionPage.js"
-
+import Spinner from "./ui/Spinner.js";
 
 const sections = [
-    { title: "Home", id: "home-section", buttonID: "home-menu-button" },
-    { title: "Favorite", id: "favorite-section", buttonID: "favorite-menu-button" },
-    { title: "Watch list", id: "watch-list-section", buttonID: "watch-list-menu-button" },
-    { title: "Search", id: "search-section", buttonID: "search-menu-button" },
-    { title: "Log in", id: "log-in-section", buttonID: "log-in-menu-button" },
-    { title: "Registration", id: "registration-section", buttonID: "registration-menu-button" },
-    { title: "Log out", id: "log-out-section", buttonID: "log-out-menu-button" }
+    { title: "Home", id: "home-section", buttonID: "home-menu-button", iconID: "home-menu-button-icon" },
+    { title: "Favorite", id: "favorite-section", buttonID: "favorite-menu-button", iconID: "favorite-menu-button-icon" },
+    { title: "Watch list", id: "watch-list-section", buttonID: "watch-list-menu-button", iconID: "watch-list-menu-button-icon" },
+    { title: "Search", id: "search-section", buttonID: "search-menu-button", iconID: "search-menu-button-icon" },
+    { title: "Log in", id: "log-in-section", buttonID: "log-in-menu-button", iconID: "log-in-menu-button-icon" },
+    { title: "Registration", id: "registration-section", buttonID: "registration-menu-button", iconID: "registration-menu-button-icon" },
+    { title: "Log out", id: "log-out-section", buttonID: "log-out-menu-button", iconID: "log-out-menu-button-icon" }
 ];
 
 const categories = [
-    { title: 'Popular', type: 'popular', name: 'popular' },
-    { title: 'Now Playing', type: 'now_playing', name: 'now-playing' },
-    { title: 'Top Rated', type: 'top_rated', name: 'top-rated' },
-    { title: 'Upcoming', type: 'upcoming', name: 'upcoming' }
+    { title: 'Популярные', type: 'popular', name: 'popular' },
+    { title: 'Уже в кино', type: 'now_playing', name: 'now-playing' },
+    { title: 'Высокий рейтинг', type: 'top_rated', name: 'top-rated' },
+    { title: 'Скоро в прокате', type: 'upcoming', name: 'upcoming' }
 ];
 
 const homeIndex = sections.findIndex(s => s.title == "Home");
@@ -36,7 +35,7 @@ const registrationIndex = sections.findIndex(s => s.title == "Registration");
 const logOutIndex = sections.findIndex(s => s.title == "Log out");
 
 const menu = new ApplicationBar("menu-container", sections, menuHandler);
-const moviesService = new MoviesService(menuHandler, categories);
+const moviesService = new MoviesService(categories);
 const homeMoviesTable = new DataGrid("home-movies-list");
 const favoriteMoviesTable = new DataGrid("favorite-movies-list");
 const watchlistMoviesTable = new DataGrid("watch-list-movies-list");
@@ -45,9 +44,9 @@ const detailsMovieForm = new DetailsMovieForm();
 const paginator = new Paginator('pages-toolbar');
 const userService = new UsersService();
 const searchMovieForm = new SearchMovieForm('search-movie');
-const userLogInPage = new UsersActionPage('log-in-section', 'login');
-const registrationPage = new UsersActionPage('registration-section', 'registration');
-
+const userLogInPage = new UsersActionPage('log-in-section', 'login', sections);
+const registrationPage = new UsersActionPage('registration-section', 'registration', sections);
+const spinner = new Spinner();
 
 const genres = await moviesService.getGenres();
 const filters = new Filters('search-toolbar', categories, genres)
@@ -70,7 +69,7 @@ async function menuHandler(index) {
     switch (index) {
         case homeIndex: {
 
-            const movies = await action(moviesService.getMoviesData.bind(moviesService));
+            const movies = await action(moviesService.getMoviesData.bind(moviesService), sections[index].id);
 
             filters.fillToolbar();
             filters.setActive();
@@ -90,7 +89,7 @@ async function menuHandler(index) {
 
         case favoriteIndex: {
 
-            const movies = await action(moviesService.getMoviesFromArray.bind(moviesService, currentUser, 'favorites'));
+            const movies = await action(moviesService.getMoviesFromArray.bind(moviesService, currentUser, 'favorites'), sections[index].id);
             favoriteMoviesTable.fillData(movies, currentUser);
             favoriteMoviesTable.addHandler(movieDetailsHandler);
 
@@ -101,7 +100,7 @@ async function menuHandler(index) {
 
         case watchListIndex: {
 
-            const movies = await action(moviesService.getMoviesFromArray.bind(moviesService, currentUser, 'watchlist'));
+            const movies = await action(moviesService.getMoviesFromArray.bind(moviesService, currentUser, 'watchlist'), sections[index].id);
 
             watchlistMoviesTable.fillData(movies, currentUser);
             watchlistMoviesTable.addHandler(movieDetailsHandler);
@@ -114,7 +113,7 @@ async function menuHandler(index) {
         case searchIndex: {
 
             searchMovieForm.fillForm();
-            searchMovieForm.addEventListener(searchHandler);
+            searchMovieForm.addHandler(searchHandler);
 
             break;
         }
@@ -122,39 +121,19 @@ async function menuHandler(index) {
         case logInIndex: {
 
             userLogInPage.fillForm();
-            userLogInPage.addHandler(async (login, password) => {
-                const user = await action(userService.login.bind(userService, login, password));
-                if (user) {
-                    menu.hideButtons([logInIndex, registrationIndex]);
-                    menu.showButtons([logOutIndex, favoriteIndex, watchListIndex]);
-                }
-                currentUser = user;
-                menu.setActiveUser(currentUser);
-                menu.setActiveIndex.call(menu, homeIndex);
-                return user;
-            })
+            userLogInPage.addHandler(logInHandler)
             break;
         }
 
         case registrationIndex: {
             registrationPage.fillForm();
-            registrationPage.addHandler(async (newUser) => {
-                const user = await action(userService.registerUser.bind(userService, newUser));
-                if (user){
-                    currentUser = user;
-                    menu.setActiveUser(currentUser);
-                    menu.hideButtons([logInIndex, registrationIndex]);
-                    menu.showButtons([logOutIndex, favoriteIndex, watchListIndex]);
-                    menu.setActiveIndex.call(menu, homeIndex);
-                    return user;
-                }
-            })
+            registrationPage.addHandler(registrationHandler)
             break;
         }
 
         case logOutIndex: {
             userService.updateUser.call(userService, currentUser);
-            await action(userService.logout.bind(userService, currentUser));
+            await userService.logout.call(userService, currentUser);
             currentUser = undefined;
             menu.setActiveUser('');
             menu.showButtons([logInIndex, registrationIndex]);
@@ -164,16 +143,40 @@ async function menuHandler(index) {
     }
 }
 
-async function buttonsHandler(parentID) {
-    const likeButtons = document.getElementById(parentID).getElementsByClassName('like-btn');
-    Array.from(likeButtons).forEach(button => button.addEventListener("click", likeHandler.bind(this, button)));
-    const watchButtons = document.getElementById(parentID).getElementsByClassName('watch-btn');
-    Array.from(watchButtons).forEach(button => button.addEventListener("click", watchHandler.bind(this, button)));
+async function logInHandler(login, password) {
+    const user = await userService.login.call(userService, login, password);
+    if (user) {
+        menu.hideButtons([logInIndex, registrationIndex]);
+        menu.showButtons([logOutIndex, favoriteIndex, watchListIndex]);
+    }
+    currentUser = user;
+    menu.setActiveUser(currentUser);
+    menu.setActiveIndex.call(menu, homeIndex);
+    return user;
 }
 
-async function likeHandler(button) {
+async function registrationHandler(newUser) {
+    const user = await userService.registerUser.call(userService, newUser);
+    if (user) {
+        currentUser = user;
+        menu.setActiveUser(currentUser);
+        menu.hideButtons([logInIndex, registrationIndex]);
+        menu.showButtons([logOutIndex, favoriteIndex, watchListIndex]);
+        menu.setActiveIndex.call(menu, homeIndex);
+        return user;
+    }
+}
+
+async function buttonsHandler(parentID) {
+    const likeButtons = document.getElementById(parentID).getElementsByClassName('like-btn');
+    Array.from(likeButtons).forEach(button => button.addEventListener("click", watchLikeHandler.bind(this, button, 'like-btn')));
+    const watchButtons = document.getElementById(parentID).getElementsByClassName('watch-btn');
+    Array.from(watchButtons).forEach(button => button.addEventListener("click", watchLikeHandler.bind(this, button, 'watch-btn')));
+}
+
+async function watchLikeHandler(button, type) {
     const movieID = button.getAttribute('movie-id');
-    const buttons = document.querySelectorAll(`button.like-btn[movie-id="${movieID}"]`);
+    const buttons = document.querySelectorAll(`button.${type}[movie-id="${movieID}"]`);
     const indexOfButton = currentUser.favorites.indexOf(movieID);
     if (indexOfButton == -1) {
         buttons.forEach(b => b.classList.add('selectedBTN'));
@@ -181,19 +184,6 @@ async function likeHandler(button) {
     } else {
         buttons.forEach(b => b.classList.remove('selectedBTN'));
         currentUser.favorites.splice(indexOfButton, 1);
-    }
-}
-
-async function watchHandler(button) {
-    const movieID = button.getAttribute('movie-id');
-    const buttons = document.querySelectorAll(`button.watch-btn[movie-id="${movieID}"]`);
-    const indexOfButton = currentUser.watchlist.indexOf(String(movieID));
-    if (indexOfButton == -1) {
-        buttons.forEach(b => b.classList.add('selectedBTN'));
-        currentUser.watchlist.push(movieID);
-    } else {
-        buttons.forEach(b => b.classList.remove('selectedBTN'));
-        currentUser.watchlist.splice(indexOfButton, 1);
     }
 }
 
@@ -219,7 +209,7 @@ async function paginatorHandler(divText) {
         newPage = Number(divText);
     }
     if (newPage) {
-        const movies = await action(moviesService.getMoviesData.bind(moviesService, newPage));
+        const movies = await moviesService.getMoviesData.call(moviesService, newPage);
         homeMoviesTable.fillData(movies, currentUser);
         homeMoviesTable.addHandler(movieDetailsHandler);
         paginator.fillForm(newPage, movies.total_pages)
@@ -230,7 +220,7 @@ async function paginatorHandler(divText) {
 
 async function filtersHandler(categoryID, index) {
     const category = categories.find(x => `category-${x.name}` == categoryID);
-    const movies = await action(moviesService.getMoviesData.bind(moviesService, 1, category.type));
+    const movies = await moviesService.getMoviesData.call(moviesService, 1, category.type);
     filters.setActive(index);
     homeMoviesTable.fillData(movies, currentUser);
     homeMoviesTable.addHandler(movieDetailsHandler);
@@ -240,31 +230,28 @@ async function filtersHandler(categoryID, index) {
 }
 
 async function genresHandler(genres) {
-    const movies = await action(moviesService.getMoviesData.bind(moviesService, 1, undefined, genres));
-    // filters.setActive(categoryID, index);
+    const movies = await moviesService.getMoviesData.call(moviesService, 1, undefined, genres);
     homeMoviesTable.fillData(movies, currentUser);
     paginator.fillForm(1, movies.total_pages)
     paginator.addHandler(paginatorHandler);
 }
 
-async function searchHandler(movieName){
-    console.log(movieName);
-    const movies = await action(moviesService.getMoviesByName.bind(moviesService, movieName));
-    console.log(movies);
+async function searchHandler(movieName) {
+    const movies = await moviesService.getMoviesByName.call(moviesService, movieName);
     searchMoviesTable.fillData(movies, currentUser);
     searchMoviesTable.addHandler(movieDetailsHandler);
 
     buttonsHandler('search-movies-list');
 }
 
-async function action(serviceFn) {
-    // spinner.start();
+async function action(serviceFn, sectionName) {
+    spinner.start(sectionName);
     try {
         const res = await serviceFn();
         return res;
     } catch (error) {
         alert(error.code ? 'server responded with ' + code : 'server is unavailable' + error)
     } finally {
-        // spinner.stop();
+        spinner.stop(sectionName);
     }
 }

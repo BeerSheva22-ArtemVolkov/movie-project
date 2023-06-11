@@ -1,3 +1,5 @@
+import imagesConfig from "../config/imagesConfig.json" assert {type: 'json'}
+
 const ACTIVE = "active";
 
 export default class ApplicationBar {
@@ -9,14 +11,14 @@ export default class ApplicationBar {
 
     constructor(parentId, sections, handler) {
         this.#callbackFn = handler;
-        this.#fillButtons(parentId, sections.map(s => s.title + "_" + s.buttonID));
+        this.#fillButtons(parentId, sections.map(s => s.title), sections.map(s => s.buttonID), sections.map(s => s.iconID));
         this.#setSectionsElements(sections.map(s => s.id));
         this.#addListeners();
     }
 
-    #fillButtons(parentId, titles) {
+    #fillButtons(parentId, titles, buttonIDs, iconIDs) {
         const parentElement = document.getElementById(parentId);
-        parentElement.innerHTML = titles.map(t => `<button class="menu-button" title="${t.split("_")[0]}"id="${t.split("_")[1]}" style="background-image: url(img/${t.split("_")[1]}-icon.png)"></button>`).join('');
+        parentElement.innerHTML = titles.map((title, index) => `<button class="menu-button" title="${title}" id="${buttonIDs[index]}" style="background-image: url(${imagesConfig[iconIDs[index]]})"></button>`).join('');
         parentElement.innerHTML += '<div id="active-user-container"></div>';
         this.#Buttons = parentElement.getElementsByClassName("menu-button");
     }
@@ -33,7 +35,7 @@ export default class ApplicationBar {
 
     async #handler(index) {
         if (this.#activeIndex == undefined || index != this.#activeIndex) {
-            
+
             if (this.#activeIndex != undefined) {
                 this.#Buttons[this.#activeIndex].classList.remove(ACTIVE);
                 this.#sectionElements[this.#activeIndex].hidden = true;
@@ -69,7 +71,7 @@ export default class ApplicationBar {
         })
     }
 
-    setActiveUser(user){
+    setActiveUser(user) {
         document.getElementById("active-user-container").innerHTML = `<a>${user.username ? `Welcome, ${user.username}` : ''}</a>`
     }
 }

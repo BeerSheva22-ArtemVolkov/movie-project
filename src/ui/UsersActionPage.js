@@ -27,10 +27,16 @@ export default class UsersActionPage {
                         ${this.#type == 'registration' ? `<div class="confirm-password-container">
                             <input type="password" name="confirm-password" id="${this.#type}-confirm-password-id" placeholder="Confirm password" required>
                         </div>` : ''}
-                <button id="${this.#type}-submitBtn" type="submit">Submit</button>
+                        <div class="button-container">
+                            <button id="${this.#type}-submitBtn" type="submit">${this.#type.charAt(0).toUpperCase() + this.#type.slice(1)}</button>
+                        </div>
+                <div class="additional-info">
+                    <a>${this.#type == 'login' ? `You have no account? <a id="link-from-${this.#type}">Register now</a>` : `You have an account? <a id="link-from-${this.#type}">Log in now</a>`}</a>
+                </div>
             </form>
         </div>`
         this.#formElement = document.getElementById(`${this.#parentID}-form-id`);
+        document.getElementById(`link-from-${this.#type}`).addEventListener("click", () => document.getElementById(`${this.#type == 'login' ? 'registration-menu-button' : 'log-in-menu-button'}`).click());
     }
 
     addHandler(callbackFn) {
@@ -43,7 +49,6 @@ export default class UsersActionPage {
             switch (this.#type) {
                 case 'login': {
                     const res = await callbackFn(this.#dataObj.username, this.#dataObj.password);
-                    console.log(res);
                     if (res) {
                         this.#formElement.reset();
                     }

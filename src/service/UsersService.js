@@ -1,12 +1,10 @@
+import config from "../config/config.json" assert {type: 'json'}
+
 const URL = 'http://localhost:3500/users'
-const usernameRegex = '/^[A-Za-z][A-Za-z0-9_]{6,20}$/'
-const passwordRegex = '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/'
+// const usernameRegex = '/^[A-Za-z][A-Za-z0-9_]{6,20}$/'
+// const passwordRegex = '/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/'
 
 export default class ServerCompanyService {
-
-    constructor(){
-
-    }
 
     async getActiveUser(){
         const allUsers = await this.#getAllUsers();
@@ -16,21 +14,18 @@ export default class ServerCompanyService {
 
     async #getUser(username){
         const data = await fetch(`${URL}/?username=${username}`)
-        console.log(data);
         const user = await data.json();
-        console.log(user);
         return user;
     }
 
     async registerUser(newUser){
-        console.log(newUser);
         const userExist = await this.#getUser(newUser.username)
         if (userExist.length){
             alert ("Такой пользователь уже существует")
         } else {
-            if (usernameRegex.match(newUser.username)){
+            if (config.usernameRegex.match(newUser.username)){
                 alert ("Недопустимое имя пользователя")
-            } else if (passwordRegex.match(newUser.password)) {
+            } else if (config.passwordRegex.match(newUser.password)) {
                 alert ("Недопустимый пароль")
             } else if (newUser.password != newUser.confirmPassword) {
                 alert ("Пароли не совпадают")
@@ -71,32 +66,6 @@ export default class ServerCompanyService {
         const response = await data.json();
     }
 
-    async addToFavoriteList(user, movieID){
-        const currentUser = await this.#getUser(user.username);
-        console.log(currentUser[0]);
-        const favorite = currentUser[0].favorites;
-        console.log(favorite);
-        favorite.push(movieID);
-        const data = await fetch(`${URL}/${user.id}`, {
-            method: 'PUT',
-            headers: {"Content-Type": "application/json"},
-            body: JSON.stringify({...currentUser[0], favorites: favorite})
-        });
-        const response = await data.json();
-    }
-
-    async addToWatchList(user){
-
-    }
-
-    async getFavoriteList(user){
-
-    }
-
-    async getWatchList(user){
-
-    }
-
     async #getAllUsers() {
         const response = await fetch(URL);
         const allUsers = await response.json();
@@ -104,14 +73,12 @@ export default class ServerCompanyService {
     }
 
     async updateUser(user){
-        console.log('update');
         if (user != undefined){
             await fetch(`${URL}/${user.id}`, {
                 method: 'PUT',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(user)
             });
-            console.log('update done');
         }
         
     }

@@ -6,26 +6,16 @@ export default class SearchMovieForm {
         this.#parentElement = document.getElementById(parentID);
     }
 
-    show(index, parentID) {
-        // document.getElementById(parentID).classList.add('BLURE');
-        this.#parentElement.style.display = "block";
-    }
-
-    hide(parentID) {
-        // document.getElementById(parentID).classList.remove('BLURE');
-        this.#parentElement.style.display = "none";
-    }
-
     fillForm() {
         this.#parentElement.innerHTML = `<div>
                                             <input id="movieToSearch" type="text">
                                         </div>
                                         <div>
-                                            </input><button id="startSearchBtn">Submit</button>
+                                            </input><button id="startSearchBtn">Поиск</button>
                                         </div>`
     }
 
-    addEventListener(fn){
+    addHandler(fn){
         document.getElementById('startSearchBtn').addEventListener("click", async ()=>{
             const movieName = document.getElementById('movieToSearch').value;
             await fn(movieName)

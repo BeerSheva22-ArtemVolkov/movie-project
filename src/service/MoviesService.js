@@ -7,18 +7,12 @@ const searchMovieURL = 'https://api.themoviedb.org/3/search/movie?'
 
 export default class MoviesService {
 
-    #movies;
-    #pages;
-    #callbackFn;
-    #genresArray;
     #categoriesArray;
     #activeCategory;
     #activeGenres;
 
-    constructor(handler, categories) {
-        this.#callbackFn = handler;
+    constructor(categories) {
         this.#categoriesArray = categories;
-        this.#movies = {};
         this.#getGenres();
     }
 
@@ -33,21 +27,24 @@ export default class MoviesService {
         const response = await fetch(URL);
         const data = await response.json();
 
-        if (category != undefined) {
-            this.#activeCategory = category;
-        }
-        if (genres != undefined) {
-            this.#activeGenres = genres;
-        }
+        if (data.success !== false) {
+            if (category != undefined) {
+                this.#activeCategory = category;
+            }
+            if (genres != undefined) {
+                this.#activeGenres = genres;
+            }
 
-        data.imageURL = imageURL;
+            data.imageURL = imageURL;
+
+        }
         return data;
+
     }
 
     async #getGenres() {
         const response = await fetch(`${genresURL}language=${language}&api_key=${apiKey}`)
         const genresObj = await response.json();
-        this.#genresArray = genresObj.genres;
         return genresObj.genres;
     }
 
@@ -71,12 +68,9 @@ export default class MoviesService {
         return movie;
     }
 
-    async getMoviesByName(movieName){
-        console.log(movieName);
-        // https://api.themoviedb.org/3/search/movie?query=Форсаж 3&language=ru-RU&api_key=2c46288716a18fb7aadcc2a801f3fc6b
+    async getMoviesByName(movieName) {
         const response = await fetch(`${searchMovieURL}query=${movieName}&language=${language}-${language.toUpperCase()}&api_key=${apiKey}`);
         const movie = await response.json();
-        console.log(movie);
         movie.imageURL = imageURL;
         return movie;
     }

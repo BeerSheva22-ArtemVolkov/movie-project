@@ -2,7 +2,26 @@ header {
     display: block
 }
 
+#error-data {
+    display: flex;
+    font-size: x-large;
+    font-weight: bold;
+    color: red;
+    width: 100%;
+    justify-content: center;
+}
+
+#link-from-login,
+#link-from-registration {
+    color: lightskyblue;
+    cursor: pointer;
+}
+
 /* login-registration */
+
+.button-container {
+    width: 100%;
+}
 
 #registration-box,
 #login-box {
@@ -13,54 +32,62 @@ header {
     flex-direction: column;
     justify-content: center;
     padding: 1.5rem;
-
+    margin: auto;
 }
 
 .password-container,
 .username-container,
-.confirm-password-container {
+.confirm-password-container,
+.button-container {
     display: flex;
     justify-content: center;
     font-size: large;
+    margin-bottom: 1rem;
 }
 
 .registration-control,
-.login-control{
+.login-control {
     display: flex;
     flex-direction: column;
 }
 
 .registration-control input,
-.login-control input{
+.login-control input {
     width: 100%;
     height: 2rem;
-    margin-bottom: 1rem;
     font-size: large;
 }
 
 #registration-submitBtn,
-#login-submitBtn{
+#login-submitBtn {
     background-color: dodgerblue;
     border: 0;
     color: white;
     height: 2rem;
     border-radius: .5rem;
     font-size: large;
+    width: -webkit-fill-available;
+    cursor: pointer;
 }
 
-#search-movie{
+#submitBtn,
+#startSearchBtn{
+    cursor: pointer;
+}
+
+#search-movie {
     background-color: gray;
     display: flex;
     flex-direction: column;
 }
 
-#search-movie input{
+#search-movie input {
     height: 2rem;
     font-size: large;
     width: -webkit-fill-available;
 }
 
-#search-movie button{
+#search-movie button {
     background-color: dodgerblue;
     border: 0px;
     font-size: large;
@@ -68,7 +95,7 @@ header {
     width: -webkit-fill-available;
 }
 
-#search-movie div{
+#search-movie div {
     font-size: large;
 }
 
@@ -79,13 +106,14 @@ header {
 }
 
 .menu-button {
+    cursor: pointer;
     background: transparent;
     border: 0px;
     border-right: 2px solid black;
     height: 2rem;
-    padding-right: 3%;
-    padding-left: 3%;
-    padding-top: 4%;
+    padding-right: 1.5rem;
+    padding-left: 1.5rem;
+    padding-top: 1.5rem;
     background-color: gainsboro;
     background-repeat: no-repeat;
     background-position: center;
@@ -131,6 +159,7 @@ header {
 #filter-categories div {
     padding: .5rem;
     border-left: 2px solid black;
+    cursor: pointer;
 }
 
 #filter-categories div:last-child {
@@ -140,6 +169,7 @@ header {
 #expand-dropdown-genres button {
     background: transparent;
     border: 0px;
+    cursor: pointer;
 }
 
 #expand-dropdown-genres {
@@ -160,6 +190,7 @@ header {
     position: relative;
     display: flex;
     flex-direction: column;
+    cursor: pointer;
 }
 
 #select-genres select {
@@ -186,6 +217,7 @@ header {
 .movies-section {
     display: flex;
     flex-direction: row;
+    justify-content: flex-start;
 }
 
 #favorite-movies-list,
@@ -198,6 +230,7 @@ header {
     list-style-type: none;
     margin: 10px;
     flex-wrap: wrap;
+    width: 100%;
 }
 
 /* Details start */
@@ -211,10 +244,10 @@ header {
     left: 50%;
     transform: translate(-50%, -50%);
     max-width: 100%;
+    min-width: 50%;
     border-radius: 2.5rem;
     background-color: slategray;
     justify-content: center;
-    /* overflow: hidden; */
 }
 
 #details-buttons-container {
@@ -231,13 +264,12 @@ header {
     background-color: transparent;
     border: 0px;
     position: absolute;
+    cursor: pointer;
 }
 
-/* #details-name button {
-    position: absolute;
-    float: right;
-    right: 0;
-} */
+#details-name {
+    width: 100%;
+}
 
 #details-name a {
     padding-left: .5rem;
@@ -277,7 +309,7 @@ header {
 }
 
 #details-overview {
-    padding-bottom: 5%;
+    padding-bottom: 1rem;
     font-size: larger;
     margin-left: 1rem;
     margin-right: 1rem;
@@ -299,16 +331,19 @@ header {
 /* Paginator start */
 
 #pages-toolbar {
+    display: flex;
+    flex-direction: row;
     justify-content: center;
 }
 
 #pages-toolbar div {
     border-radius: .5rem;
+    padding: .5rem;
+    margin: .5rem;
     width: auto;
     height: auto;
     text-align: center;
     background-color: gainsboro;
-    /* color: ; */
 }
 
 #pages-toolbar #active-page {
@@ -318,9 +353,41 @@ header {
 
 /* Paginator end */
 
+/* Spinner start */
+
+.loader {
+    margin: 20%;
+    border: 16px solid #f3f3f3;
+    border-top: 16px solid #3498db;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.hide-loader {
+    display: none;
+}
+
+/* Spinner end */
+
+.movie-item-info{
+    cursor: pointer;
+}
+
 .movie-item {
     width: 160px;
-    margin: 10px;
+    margin: .5rem;
     font-size: .75rem;
 }
 
@@ -347,17 +414,6 @@ header {
     background-color: white;
 }
 
-#pages-toolbar {
-    display: flex;
-    flex-direction: row;
-}
-
-#pages-toolbar div {
-    padding: .5rem;
-    margin: .5rem;
-    /* background-color: red; */
-}
-
 .BLURE {
     filter: blur(8px);
 }
@@ -373,4 +429,38 @@ header {
 .selectedBTN {
     background-color: green;
     /* border: 3px solid black; */
+}
+
+@media screen and (max-width: 1000px) {
+
+    #pages-toolbar div {
+        margin: .15rem;
+    }
+
+    .menu-button {
+        width: 2.5rem;
+    }
+
+    .movie-item img {
+        width: 80%;
+    }
+
+    #details-overview {
+        font-size: initial;
+    }
+
+    #details-head {
+        font-size: 30px;
+    }
+
+    #pages-toolbar {
+        justify-content: space-evenly;
+    }
+
+    #home-movies-list-details,
+    #favorite-movies-list-details,
+    #search-movies-list-details,
+    #watch-list-movies-list-details {
+        min-width: 75%;
+    }
 }
