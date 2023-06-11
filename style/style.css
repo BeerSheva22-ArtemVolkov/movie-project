@@ -71,7 +71,8 @@ header {
 }
 
 #submitBtn,
-#startSearchBtn{
+#startSearchBtn,
+.paginator-item{
     cursor: pointer;
 }
 

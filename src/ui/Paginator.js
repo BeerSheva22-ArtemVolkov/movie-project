@@ -21,9 +21,9 @@ export default class Paginator {
     }
 
     #fillMiddlePart() {
-        return `${this.#activePage == 1 ? '' : `<div>1</div>`}
-                ${`${this.#buildPrev()}<div id="active-page">${this.#activePage}</div>${this.#buildNext()}`}
-                ${this.#activePage == this.#totalPages ? '' : `<div>${this.#totalPages}</div>`}`
+        return `${this.#activePage == 1 ? '' : `<div class="paginator-item">1</div>`}
+                ${`${this.#buildPrev()}<div id="active-page" class="paginator-item">${this.#activePage}</div>${this.#buildNext()}`}
+                ${this.#activePage == this.#totalPages ? '' : `<div class="paginator-item">${this.#totalPages}</div>`}`
     }
 
     #buildPrev() {
@@ -31,7 +31,7 @@ export default class Paginator {
         let count = 0;
         let i = this.#activePage - 1;
         while (i > 1 && count < 2) {
-            res.push(`<div>${i--}</div>`);
+            res.push(`<div class="paginator-item">${i--}</div>`);
             count++;
         }
         if (i > 1) {
@@ -45,7 +45,7 @@ export default class Paginator {
         let count = 0;
         let i = this.#activePage;
         while (i < this.#totalPages - 1 && count < 2) {
-            res += `<div>${++i}</div>`
+            res += `<div class="paginator-item">${++i}</div>`
             count++;
         }
         if (i < this.#totalPages - 1) {
