@@ -112,9 +112,7 @@ header {
     border: 0px;
     border-right: 2px solid black;
     height: 2rem;
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    padding-top: 1.5rem;
+    padding: 1.5rem;
     background-color: gainsboro;
     background-repeat: no-repeat;
     background-position: center;
@@ -219,6 +217,7 @@ header {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    padding-bottom: 0.5rem;
 }
 
 #favorite-movies-list,
@@ -332,9 +331,14 @@ header {
 /* Paginator start */
 
 #pages-toolbar {
+    background-color: gray;
+    border-radius: .5rem;
+    bottom: 0px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: fixed;
     display: flex;
     flex-direction: row;
-    justify-content: center;
 }
 
 #pages-toolbar div {
@@ -387,13 +391,14 @@ header {
 }
 
 .movie-item {
-    width: 160px;
+    width: 240px;
     margin: .5rem;
-    font-size: .75rem;
+    font-size: .8rem;
 }
 
 .movie-item img {
-    width: 160px;
+    width: 240px;
+    height: 360px;
     padding: 1px;
 }
 
@@ -444,6 +449,7 @@ header {
 
     .movie-item img {
         width: 80%;
+        height: 80%;
     }
 
     #details-overview {

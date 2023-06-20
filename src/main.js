@@ -62,8 +62,6 @@ if (response.length) {
     menu.hideButtons([logOutIndex, favoriteIndex, watchListIndex]);
 }
 
-// const intervalID = setInterval(userService.updateUser.bind(userService, currentUser), 5000);
-
 async function menuHandler(index) {
 
     switch (index) {
@@ -121,23 +119,28 @@ async function menuHandler(index) {
         case logInIndex: {
 
             userLogInPage.fillForm();
-            userLogInPage.addHandler(logInHandler)
+            userLogInPage.addHandler(logInHandler);
+
             break;
         }
 
         case registrationIndex: {
             registrationPage.fillForm();
-            registrationPage.addHandler(registrationHandler)
+            registrationPage.addHandler(registrationHandler);
+
             break;
         }
 
         case logOutIndex: {
-            userService.updateUser.call(userService, currentUser);
+
+            await userService.updateUser.call(userService, currentUser);
             await userService.logout.call(userService, currentUser);
             currentUser = undefined;
+
             menu.setActiveUser('');
             menu.showButtons([logInIndex, registrationIndex]);
             menu.hideButtons([logOutIndex, favoriteIndex, watchListIndex]);
+
             break;
         }
     }
@@ -175,16 +178,18 @@ async function buttonsHandler(parentID) {
 }
 
 async function watchLikeHandler(button, type) {
+    const listType = type == 'watch-btn' ? currentUser.watchlist : currentUser.favorites;
     const movieID = button.getAttribute('movie-id');
     const buttons = document.querySelectorAll(`button.${type}[movie-id="${movieID}"]`);
-    const indexOfButton = currentUser.favorites.indexOf(movieID);
+    const indexOfButton = listType.indexOf(movieID);
     if (indexOfButton == -1) {
         buttons.forEach(b => b.classList.add('selectedBTN'));
-        currentUser.favorites.push(movieID);
+        listType.push(movieID);
     } else {
         buttons.forEach(b => b.classList.remove('selectedBTN'));
-        currentUser.favorites.splice(indexOfButton, 1);
+        listType.splice(indexOfButton, 1);
     }
+    userService.updateUser(currentUser);
 }
 
 async function movieDetailsHandler(index, section) {
@@ -197,16 +202,16 @@ async function movieDetailsHandler(index, section) {
     }
 }
 
-async function paginatorHandler(divText) {
+async function paginatorHandler(pageText) {
     let newPage;
     const activePage = paginator.getActive();
     const totalPages = paginator.getTotal();
-    if (divText == 'prev' && activePage > 1) {
+    if (pageText == 'prev' && activePage > 1) {
         newPage = activePage - 1;
-    } else if (divText == 'next' && activePage < totalPages) {
+    } else if (pageText == 'next' && activePage < totalPages) {
         newPage = activePage + 1;
     } else {
-        newPage = Number(divText);
+        newPage = Number(pageText);
     }
     if (newPage) {
         const movies = await moviesService.getMoviesData.call(moviesService, newPage);
@@ -232,6 +237,7 @@ async function filtersHandler(categoryID, index) {
 async function genresHandler(genres) {
     const movies = await moviesService.getMoviesData.call(moviesService, 1, undefined, genres);
     homeMoviesTable.fillData(movies, currentUser);
+    homeMoviesTable.addHandler(movieDetailsHandler);
     paginator.fillForm(1, movies.total_pages)
     paginator.addHandler(paginatorHandler);
 }

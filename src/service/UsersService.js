@@ -30,6 +30,7 @@ export default class ServerCompanyService {
             } else if (newUser.password != newUser.confirmPassword) {
                 alert ("Пароли не совпадают")
             } else {
+                delete newUser.confirmPassword;
                 const response = await fetch(URL, {
                     method: 'POST',
                     headers: { "Content-Type": "application/json" },
@@ -58,6 +59,7 @@ export default class ServerCompanyService {
     }
 
     async logout(user){
+        console.log('logout');
         const data = await fetch(`${URL}/${user.id}`, {
             method: 'PUT',
             headers: {"Content-Type": "application/json"},

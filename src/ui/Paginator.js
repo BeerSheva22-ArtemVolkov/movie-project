@@ -1,3 +1,5 @@
+import config from "../config/config.json" assert {type: 'json'}
+
 export default class Paginator {
 
     #parentElement;
@@ -30,7 +32,7 @@ export default class Paginator {
         let res = [];
         let count = 0;
         let i = this.#activePage - 1;
-        while (i > 1 && count < 2) {
+        while (i > 1 && count < config.sidePagesCount) {
             res.push(`<div class="paginator-item">${i--}</div>`);
             count++;
         }
@@ -44,7 +46,7 @@ export default class Paginator {
         let res = '';
         let count = 0;
         let i = this.#activePage;
-        while (i < this.#totalPages - 1 && count < 2) {
+        while (i < this.#totalPages - 1 && count < config.sidePagesCount) {
             res += `<div class="paginator-item">${++i}</div>`
             count++;
         }

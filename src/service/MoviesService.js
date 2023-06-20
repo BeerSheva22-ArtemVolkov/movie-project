@@ -1,9 +1,4 @@
-const mainURL = 'https://api.themoviedb.org/3/movie/';
-const imageURL = 'https://image.tmdb.org/t/p/w500/';
-const language = 'ru';
-const apiKey = '2c46288716a18fb7aadcc2a801f3fc6b';
-const genresURL = 'https://api.themoviedb.org/3/genre/movie/list?'
-const searchMovieURL = 'https://api.themoviedb.org/3/search/movie?'
+import moviesConfig from "../config/moviesConfig.json" assert {type: 'json'}
 
 export default class MoviesService {
 
@@ -23,7 +18,7 @@ export default class MoviesService {
         if (genres == undefined) {
             genres = this.#activeGenres;
         }
-        const URL = `${mainURL}${category == undefined ? this.#activeCategory : category}?language=${language}-${language.toUpperCase()}${pageNum == undefined ? '' : `&page=${pageNum}`}${genres == undefined ? this.#activeGenres == undefined ? '' : this.#activeGenres : `&with_genres=${genres.replace(',', '|')}`}&api_key=${apiKey}`;
+        const URL = `${moviesConfig.mainURL}${category == undefined ? this.#activeCategory : category}?language=${moviesConfig.language}-${moviesConfig.language.toUpperCase()}${pageNum == undefined ? '' : `&page=${pageNum}`}${genres == undefined ? this.#activeGenres == undefined ? '' : this.#activeGenres : `&with_genres=${genres.replace(',', '|')}`}&api_key=${moviesConfig.apiKey}`;
         const response = await fetch(URL);
         const data = await response.json();
 
@@ -35,7 +30,7 @@ export default class MoviesService {
                 this.#activeGenres = genres;
             }
 
-            data.imageURL = imageURL;
+            data.imageURL = moviesConfig.imageURL;
 
         }
         return data;
@@ -43,7 +38,7 @@ export default class MoviesService {
     }
 
     async #getGenres() {
-        const response = await fetch(`${genresURL}language=${language}&api_key=${apiKey}`)
+        const response = await fetch(`${moviesConfig.genresURL}language=${moviesConfig.language}&api_key=${moviesConfig.apiKey}`)
         const genresObj = await response.json();
         return genresObj.genres;
     }
@@ -59,19 +54,19 @@ export default class MoviesService {
             movie.genre_ids = movie.genres.map(genre => genre.id);
             movies.push(movie);
         }
-        return { results: movies, imageURL: imageURL };
+        return { results: movies, imageURL: moviesConfig.imageURL };
     }
 
     async #getMovieByID(movieID) {
-        const response = await fetch(`${mainURL}${movieID}?language=${language}-${language.toUpperCase()}&api_key=${apiKey}`);
+        const response = await fetch(`${moviesConfig.mainURL}${movieID}?language=${moviesConfig.language}-${moviesConfig.language.toUpperCase()}&api_key=${moviesConfig.apiKey}`);
         const movie = await response.json();
         return movie;
     }
 
     async getMoviesByName(movieName) {
-        const response = await fetch(`${searchMovieURL}query=${movieName}&language=${language}-${language.toUpperCase()}&api_key=${apiKey}`);
+        const response = await fetch(`${moviesConfig.searchMovieURL}query=${movieName}&language=${moviesConfig.language}-${moviesConfig.language.toUpperCase()}&api_key=${moviesConfig.apiKey}`);
         const movie = await response.json();
-        movie.imageURL = imageURL;
+        movie.imageURL = moviesConfig.imageURL;
         return movie;
     }
 

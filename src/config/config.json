@@ -1,4 +1,5 @@
 {
     "usernameRegex": "/^[A-Za-z][A-Za-z0-9_]{6,20}$/",
-    "passwordRegex": "/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,15}$/"
+    "passwordRegex": "/^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\\s).{8,15}$/",
+    "sidePagesCount": 4
 }

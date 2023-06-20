@@ -17,31 +17,30 @@ export default class Filters {
     }
 
     fillToolbar() {
-        this.#parentElement.innerHTML = `<div id="filter-categories">${this.#categories.map(category => `<div id="category-${category.name}">${category.title}</div>`).join('')}</div>`
-        this.#parentElement.innerHTML += `<div id="select-genres">
-                                                <div id="expand-dropdown-genres">
-                                                    <button>Жанры</button>
-                                                </div>
-                                                <div id="dropdown-genres">
-                                                    <form class="genres-form">
-                                                        <div>
-                                                            ${this.#genres.map(genre => `<label for="genre-id-${genre.id}">
-                                                                                            <input type="checkbox" id="genre-id-${genre.id}" class="genres"/>${genre.name}</label>
-                                                                                        </label>`).join('')}
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                                <div id="submit-form">
-                                                    <button id="submitBtn" type="submit">Submit</button>
-                                                </div>
-                                                
-                                            </div>`;
+            this.#parentElement.innerHTML = `   <div id="filter-categories">${this.#categories.map(category => `<div id="category-${category.name}">${category.title}</div>`).join('')}</div>
+                                                <div id="select-genres">
+                                                    <div id="expand-dropdown-genres">
+                                                        <button>Жанры▼</button>
+                                                    </div>
+                                                    <div id="dropdown-genres">
+                                                        <form class="genres-form">
+                                                            <div>
+                                                                ${this.#genres.map(genre => `<label for="genre-id-${genre.id}">
+                                                                                                <input type="checkbox" id="genre-id-${genre.id}" class="genres"/>${genre.name}</label>
+                                                                                            </label>`).join('')}
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                    <div id="submit-form">
+                                                        <button id="submitBtn" type="submit">Submit</button>
+                                                    </div>
+                                                </div>`;
         document.getElementById("expand-dropdown-genres").addEventListener("click", this.#showCheckboxes.bind(this))
     }
 
     #addCategoriesListeners() {
         document.getElementById("filter-categories").childNodes.forEach((row, index) => {
-            row.addEventListener("click", this.#categoriesHandler.bind(this, row.id, index))
+            row.addEventListener("click", this.#categoriesCallback.bind(this, row.id, index))
         })
     }
 
@@ -49,9 +48,9 @@ export default class Filters {
         document.getElementById("submitBtn").addEventListener("click", this.#genresHandler.bind(this))
     }
 
-    async #categoriesHandler(id, index) {
-        await this.#categoriesCallback(id, index);
-    }
+    // async #categoriesHandler(id, index) {
+    //     await this.#categoriesCallback(id, index);
+    // }
 
     async #genresHandler() {
         const arr = document.getElementsByClassName("genres");

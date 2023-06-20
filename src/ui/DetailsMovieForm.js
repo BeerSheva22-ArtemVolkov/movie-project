@@ -22,6 +22,7 @@ export default class DetailsMovieForm {
 
     fillForm(parentID, index, genres) {
         const movieItem = document.getElementById(parentID).getElementsByClassName('movie-item')[index];
+        console.log(movieItem);
         document.getElementById(parentID + '-details').innerHTML = `
             <div id="details-head">
                 <div id="details-name">
